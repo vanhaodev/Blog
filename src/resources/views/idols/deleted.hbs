@@ -1,0 +1,86 @@
+<div class="mt-4">
+    <div>
+        <a href="/idols/edit">Danh sách idols</a>
+    </div>
+    <table class="idols-edit-table">
+        <tr class="idol-tr">
+            <th class="idol-edit-th">STT</th>
+            <th class="idol-edit-th">Ảnh</th>
+            <th class="idol-edit-th">Tên</th>
+            <th class="idol-edit-th">Ngày xóa</th>
+            <th class="idol-edit-th">Tùy chỉnh</th>
+        </tr>
+        {{#each idols}}
+        <tr class="idol-tr">
+            <td class="idol-edit-td">{{sum @index 1}}</td>
+            <td class="idol-edit-td"><img class="idols-image-edit-page" src="{{this.image}}"></td>
+            <td class="idol-edit-td"><a href="/idols/{{this.slug}}">{{this.name}} </a></td>
+            <td class="idol-edit-td">{{this.deletedAt}}</td>
+            <td class="idol-edit-td">
+                <a href="" class="btn btn-link btn-restore" data-id="{{this._id}}">Khôi phục</a>
+                <a href="" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#delete-idol"
+                    data-id="{{this._id}}">Xóa vĩnh viễn</a>
+            </td>
+        </tr>
+        {{else}}
+        <div class="text-center mb-5">
+            <h1>Không có gì trong thùng rác cả!</h1>
+            <b><a href="/idols/edit">Xóa vài idol</a></b>
+        </div>
+
+        {{/each}}
+    </table>
+
+</div>
+
+<!-- xóa idols -->
+
+<div id="delete-idol" class="modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Cảnh báo</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Xóa vĩnh viễn sẽ không thể khôi phục! bạn có muốn xóa?</p>
+            </div>
+            <div class="modal-footer">
+                <button id="btn-delete-idol" type="button" class="btn btn-danger">Xóa</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<form name="delete-idol-form" method="post"></form>
+<form name="restore-idol-form" method="post"></form>
+<script>
+    //Lắng nghe
+    document.addEventListener('DOMContentLoaded', function () {
+        var idolID;
+        var deleteForm = document.forms['delete-idol-form'];
+        var restoreForm = document.forms['restore-idol-form'];
+        var btnRestore = $('.btn-restore'); //dùng jquery lấy tất cả button xóa
+        var btnDelete_idol = document.getElementById('btn-delete-idol');
+        //Khi dialog showw
+        $('#delete-idol').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            idolID = button.data('id');
+        });
+
+        btnDelete_idol.onclick = function () {
+            deleteForm.action = '/idols/' + idolID + '/force?_method=DELETE';
+            deleteForm.submit();
+        }
+
+        btnRestore.click(function (e) {
+            e.preventDefault();
+            var idolID = $(this).data('id');
+
+            restoreForm.action = '/idols/' + idolID + '/restore?_method=PATCH';
+            restoreForm.submit();
+        });
+
+    });
+</script>

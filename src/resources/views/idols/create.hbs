@@ -1,0 +1,78 @@
+<div class="mt-4">
+ <form action="/idols/creating" method="post" name="idolscreateForm" id="idolscreateForm">
+
+     <div class="mb-3">
+         <label for="name" class="form-label"><b>Thêm idol vào trang web</b></label>
+         
+
+        <div id="errorpopup_clientside" class="idols_createANDupdate_errorAtlert" role="alert">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="red" class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2" viewBox="0 0 16 16" role="img" aria-label="Warning:">
+            <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+          </svg>
+          <div id="error"></div>
+        </div>
+
+
+         {{#if exportErrors}}
+         {{#each exportErrors}}
+         <div class="alert alert-primary d-flex align-items-center" role="alert">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="red" class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2" viewBox="0 0 16 16" role="img" aria-label="Warning:">
+              <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+            </svg>
+            <div>
+              {{this}}
+            </div>
+          </div>
+          {{/each}}
+          {{/if}}
+         <input type="text" class="form-control" id="name" name="name" placeholder="Tên" value="{{oldValuesofform.name}}">
+     </div>
+     <div class="mb-3">
+         <label for="description" class="form-label">Mô tả</label>
+         <textarea  rows="8"  type="text" class="form-control" id="description" name="description" >{{oldValuesofform.description}}</textarea>
+ 
+         <label for="image" class="form-label">Hình ảnh</label>
+         <input type="text" class="form-control" id="image" name="image" value="{{oldValuesofform.image}}">
+ 
+     </div>
+     <button type="submit" class="btn- btn-primary" onsubmit="return validate()">Tạo</button>
+ </form>
+</div>
+
+<script>
+ 
+  const name = document.getElementById('name');
+  const description = document.getElementById('description');
+  const image = document.getElementById('image');
+  const form = document.getElementById('idolscreateForm')
+  const errorElement = document.getElementById('error');
+  
+  document.getElementById('errorpopup_clientside').style.display = "none";
+
+  form.addEventListener('submit', (e) =>{
+    let messages = []
+    if (name.value === '' || name.value == null){
+      messages.push('Tên không được để trống!');
+      
+    }
+
+    if (description.value.length < 30 || description.value.length > 3000){
+      messages.push('Mô tả không được để trống!');
+    }
+
+    if (image.value === '' || image.value == null){
+      messages.push('Ảnh không được để trống!');
+    }
+
+
+    if(messages.length > 0){
+      e.preventDefault()
+      document.getElementById('errorpopup_clientside').style.display = "block";
+      errorElement.innerText = messages.join(', ');
+    }
+    else
+    {
+      document.getElementById('errorpopup_clientside').style.display = "none";
+    }
+  });
+</script>

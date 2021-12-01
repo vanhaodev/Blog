@@ -1,0 +1,28 @@
+<div class="">
+    <div class="row">
+        {{#each_upto idols 3}}
+        
+        <div class="col-sm-6 col-lg-4 mt-3">
+            <div class="card">
+
+                   
+                <img src="{{this.image}}" alt="" class="thumb-post-img">
+                
+
+                <div class="card-body">
+                    <a href="/idols/{{this.slug}}" class="href">
+                    <h5 class="card-title">{{this.name}}</h5>
+                    </a>                  
+
+                </div>
+            </div>
+        </div>
+   
+        {{/each_upto}}
+    </div>
+</div>
+
+
+    
+  
+  
