@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 
 function connect(){
     try {
-        mongoose.connect('mongodb://localhost:27017/nvh2001_dev');
+        mongoose.connect('mongodb://localhost:27017/aoeteam');
         useCreateIndex: true,
         console.log('Kết nối ok!');
     } catch (error) {
